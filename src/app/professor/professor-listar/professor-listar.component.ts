@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfessorService } from '../../services/professor.service';
 import Swal from 'sweetalert2';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-professor-listar',
-  imports: [RouterLink],
+  imports: [RouterLink, FormsModule],
   templateUrl: './professor-listar.component.html',
   styleUrl: './professor-listar.component.css'
 })
 export class ProfessorListarComponent implements OnInit {
-  constructor(private professorService: ProfessorService) {
+  constructor(
+    private professorService: ProfessorService,
+    private route: ActivatedRoute,
+    private router: Router) {
     
     
   }
@@ -18,12 +22,16 @@ export class ProfessorListarComponent implements OnInit {
     //Executado quando inicia a página
     this.listarProfessor();
   }
+
+  filtro: string = '';
   professores : any[] = [];
+  professoresFiltrados : any[] = [];
 
   listarProfessor(){
     this.professorService.listar().subscribe({
       next: response => {
         this.professores = response.dados;
+        this.professoresFiltrados = this.professores
       },
       error: error => {
         Swal.fire({
@@ -34,6 +42,17 @@ export class ProfessorListarComponent implements OnInit {
         })
       }
     })
+  }
+  filtrarProfessores() {
+    const termo = this.filtro.toLowerCase().trim(); // Converte para minúsculas e remove espaços extras
+    this.professoresFiltrados = this.professores.filter(professor =>
+      professor.nome.toLowerCase().includes(termo) || // Filtra pelo nome
+      professor.biografia.toLowerCase().includes(termo) // Filtra pelo período
+    );    
+  }  
+  editar(id: any)
+  {
+    this.router.navigate(['professor/editar', id]);
   }
   removerProfessor(id: any) {
     this.professorService.remover(id).subscribe({

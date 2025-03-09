@@ -1,11 +1,11 @@
 <h3>Listagem de Cursos</h3>
-<!-- <div class="d-flex">
+ <div class="d-flex">
     <input type="text" [(ngModel)]="filtro" (input)="filtrarCursos()" class="form-control me-2" placeholder="Digite para filtrar..." />
     <a class="btn btn-primary" routerLink="/curso/adicionar" style="width: 150px;">
         <i class="fa-solid fa-circle-plus"></i>
         Novo Curso
     </a>
-</div> -->
+</div> 
 <hr>
 <table class="table table-striped table-hover">
     <thead>
@@ -16,13 +16,13 @@
         </tr>
     </thead>
     <tbody>
-        @for (curso of cursos; track $index) {
+        @for (curso of cursosFiltrados; track $index) {
             <tr>
                 <td>{{ curso.nome }}</td>
                 <td>{{ curso.periodo }}</td>
                 <td class="center">
                     <a [routerLink]="['/curso/editar', curso.id]" class="btn btn-secondary btn-sm mr-5">
-                        <i class="fa-regular fa-pen-to-square"></i>
+                        <i class="fa-solid fa-pen-to-square"></i>
                         Editar
                     </a>                        
                      <button class="btn btn-danger btn-sm" (click)="removerCurso(curso.id)" >

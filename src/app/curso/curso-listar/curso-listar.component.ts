@@ -1,29 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { CursoService } from '../../services/curso.service';
 import Swal from 'sweetalert2';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-curso-listar',
-  imports: [RouterLink],
+  imports: [RouterLink, FormsModule],
   templateUrl: './curso-listar.component.html',
   styleUrl: './curso-listar.component.css'
 })
 export class CursoListarComponent implements OnInit {
-  constructor(private cursoService: CursoService) {
-    
-    
+  constructor(
+    private cursoService: CursoService,
+    private route: ActivatedRoute,
+    private router: Router) {
   }
   ngOnInit(): void {
     //Executado quando inicia a página
     this.listarCurso();
   }
+  filtro: string = '';
   cursos : any[] = [];
+  cursosFiltrados : any[] = [];
 
   listarCurso(){
     this.cursoService.listar().subscribe({
       next: response => {
         this.cursos = response.dados;
+        this.cursosFiltrados = this.cursos
       },
       error: error => {
         Swal.fire({
@@ -34,6 +39,17 @@ export class CursoListarComponent implements OnInit {
         })
       }
     })
+  }
+  filtrarCursos() {
+    const termo = this.filtro.toLowerCase().trim(); // Converte para minúsculas e remove espaços extras
+    this.cursosFiltrados = this.cursos.filter(curso =>
+      curso.nome.toLowerCase().includes(termo) || // Filtra pelo nome
+      curso.periodo.toLowerCase().includes(termo) // Filtra pelo período
+    );    
+  }  
+  editar(id: any)
+  {
+    this.router.navigate(['curso/editar', id]);
   }
   removerCurso(id: any) {
     this.cursoService.remover(id).subscribe({
