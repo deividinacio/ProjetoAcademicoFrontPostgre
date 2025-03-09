@@ -54,27 +54,39 @@ export class ProfessorListarComponent implements OnInit {
   {
     this.router.navigate(['professor/editar', id]);
   }
-  removerProfessor(id: any) {
-    this.professorService.remover(id).subscribe({
-      next: (response) => {
-        Swal.fire({
-          title: 'Sistema Acadêmico', 
-          text: response.dados.mensagem, 
-          icon: 'success', 
-          confirmButtonText: 'OK'
-        })        
-        this.listarProfessor();
-      },
-      error: error => {
-        Swal.fire({
-          title: 'Sistema Acadêmico', 
-          text: error.dados.mensagem, 
-          icon: 'error', 
-          confirmButtonText: 'OK'
-        })
-      }
-    });    
-  }  
 
+removerProfessor(id: any) {
+    Swal.fire({
+      title: "Tem certeza disso ?",
+      text: "Deseja deletar permanentemente este professor ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, deletar agora!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.professorService.remover(id).subscribe({
+          next: (response) => {
+            Swal.fire({
+              title: 'Sistema Acadêmico', 
+              text: response.dados.mensagem, 
+              icon: 'success', 
+              confirmButtonText: 'OK'
+            })        
+            this.listarProfessor();
+          },
+          error: error => {
+            Swal.fire({
+              title: 'Sistema Acadêmico', 
+              text: error.dados.mensagem, 
+              icon: 'error', 
+              confirmButtonText: 'OK'
+            })
+          }
+        }); 
+      } 
+    });
+  }  
 }
 

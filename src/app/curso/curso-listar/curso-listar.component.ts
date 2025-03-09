@@ -52,25 +52,36 @@ export class CursoListarComponent implements OnInit {
     this.router.navigate(['curso/editar', id]);
   }
   removerCurso(id: any) {
-    this.cursoService.remover(id).subscribe({
-      next: (response) => {
-        Swal.fire({
-          title: 'Sistema Acadêmico', 
-          text: response.dados.mensagem, 
-          icon: 'success', 
-          confirmButtonText: 'OK'
-        })        
-        this.listarCurso();
-      },
-      error: error => {
-        Swal.fire({
-          title: 'Sistema Acadêmico', 
-          text: error.dados.mensagem, 
-          icon: 'error', 
-          confirmButtonText: 'OK'
-        })
-      }
-    });    
+    Swal.fire({
+      title: "Tem certeza disso ?",
+      text: "Deseja deletar permanentemente este curso ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, deletar agora!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cursoService.remover(id).subscribe({
+          next: (response) => {
+            Swal.fire({
+              title: 'Sistema Acadêmico', 
+              text: response.dados.mensagem, 
+              icon: 'success', 
+              confirmButtonText: 'OK'
+            })        
+            this.listarCurso();
+          },
+          error: error => {
+            Swal.fire({
+              title: 'Sistema Acadêmico', 
+              text: error.dados.mensagem, 
+              icon: 'error', 
+              confirmButtonText: 'OK'
+            })
+          }
+        }); 
+      } 
+    });
   }  
-
 }
