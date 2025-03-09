@@ -1,7 +1,7 @@
 
-<h3>Cadastro de Cursos</h3>
+<h3>Editar Cursos</h3>
 <hr>
-<form (ngSubmit)="adicionar(cursoForm)" #cursoForm="ngForm">
+<form (ngSubmit)="atualizar(cursoForm)" #cursoForm="ngForm">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <label class="form-label">Nome</label>
@@ -47,7 +47,7 @@
   
     <hr>
     <div class="text-center">
-        <button class="btn btn-danger mr-5" type="reset" (click)="cancelar();" >
+        <button class="btn btn-danger mr-5" type="reset"  (click)="cancelar();">
             <i class="fa-solid fa-xmark"></i>
             Cancelar
         </button>

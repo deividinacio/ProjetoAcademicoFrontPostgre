@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CursoService } from '../../services/curso.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-curso-adicionar',
@@ -11,7 +12,9 @@ import Swal from 'sweetalert2';
   styleUrl: './curso-adicionar.component.css'
 })
 export class CursoAdicionarComponent {
-  constructor(private cursoService: CursoService){}
+  constructor(
+    private cursoService: CursoService,
+    private router: Router){}
   curso = {
     nome: '',
     descricao: '',
@@ -39,6 +42,8 @@ export class CursoAdicionarComponent {
           icon: 'success',
           confirmButtonText: 'OK'
         });  
+
+        this.router.navigate(['/curso/listar']);   
       },
       error: error => {
         Swal.fire({
@@ -49,6 +54,11 @@ export class CursoAdicionarComponent {
         })
       }
     });
-    
   }
+
+  cancelar() {
+    this.router.navigate(['/curso/listar']);     
+  }
+
+
 }

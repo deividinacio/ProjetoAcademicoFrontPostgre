@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ProfessorService } from '../../services/professor.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,7 +13,10 @@ import Swal from 'sweetalert2';
 })
 export class ProfessorAdicionarComponent {
 
-  constructor(private professorService: ProfessorService){}
+  constructor(
+    private professorService: ProfessorService,
+    private route: ActivatedRoute,
+    private router: Router){}
   professor = {
     nome: '',
     biografia: ''
@@ -37,6 +41,8 @@ export class ProfessorAdicionarComponent {
           icon: 'success',
           confirmButtonText: 'OK'
         });  
+
+        this.router.navigate(['/professor/listar']); 
       },
       error: error => {
         Swal.fire({
@@ -48,6 +54,9 @@ export class ProfessorAdicionarComponent {
       }
     });
     
+  }
+  cancelar() {
+    this.router.navigate(['/professor/listar']);     
   }
 }
 
